@@ -1,0 +1,48 @@
+# .github/workflows/documentation.yml
+name: Build & Deploy docs
+
+on:
+  push:
+    paths:
+      - 'docs/**'
+      - 'README.md'
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  contents: read
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build docs
+        run: |
+          # If you have a SSG (like docs folder built by mkdocs or docusaurus), run its build step.
+          # Example simple fallback: copy docs into public/docs
+          mkdir -p public/docs
+          cp -r docs/* public/docs/ || true
+          ls -la public/docs || true
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/docs
+
+  deploy-pages:
+    needs: build-docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
