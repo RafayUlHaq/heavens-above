@@ -4,12 +4,12 @@
   "private": true,
   "description": "Scripts for scraping the Heavens Above website.",
   "main": "run.js",
-"scripts": {
-  "lint": "eslint . || true",
-  "test": "mocha || echo \"no tests\"",
-  "build": "next build || node run.js || echo \"no build step\"",
-  "start": "next start || node run.js"
-}
+  "scripts": {
+    "lint": "eslint . || true",
+    "test": "mocha || echo \"no tests\"",
+    "build": "next build || node run.js || echo \"no build step\"",
+    "start": "next start || node run.js"
+  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "request": "^2.88.2"
@@ -32,3 +32,4 @@
     "node": ">=12.10.0"
   }
 }
+
