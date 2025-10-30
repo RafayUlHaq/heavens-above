@@ -25,12 +25,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-        npm install
-        
+          npm install
 
       - name: Run maintenance script
         run: |
-          # Replace with your script, e.g. node run.js
           if [ -f ./run.js ]; then
             node run.js
           else
@@ -44,4 +42,6 @@ jobs:
           name: scheduled-output
           path: |
             last-run.txt
-            public || out || .
+            public
+            out
+            .
