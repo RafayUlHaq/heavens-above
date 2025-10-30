@@ -1,0 +1,28 @@
+name: Generate Daily Report
+
+on:
+  schedule:
+    - cron: "0 1 * * *"  # 1 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  daily-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate report file
+        run: |
+          echo "Daily Automated Report" > report.txt
+          echo "Timestamp: $(date)" >> report.txt
+          echo "Repository: $GITHUB_REPOSITORY" >> report.txt
+
+      - name: Commit report
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: daily automated report"
+          file_pattern: "report.txt"

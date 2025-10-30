@@ -1,0 +1,35 @@
+name: Dependency Updates
+
+on:
+  schedule:
+    - cron: "0 2 * * *"   # Runs daily at 2 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Enable npm auto-update
+        run: |
+          npm install -g npm-check-updates
+          ncu -u
+          npm install
+
+      - name: Create Pull Request with updates
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: automated dependency updates"
+          title: "Automated Dependency Updates"
+          branch: "auto-deps"
